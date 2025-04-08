@@ -1,0 +1,20 @@
+{
+    "name": "TheNTP",
+    "keywords": "NTP",
+    "description": "",
+    "version": "1.0.0",
+    "authors": {
+        "name": "Stéphane Fardoux"
+    },
+    "export": {
+        "include": [
+            "src",
+            "TheNTP.h"
+        ]
+    },
+    "frameworks": "*",
+    "platforms": "*",
+    "build": {
+        "libArchive": true
+    }
+}

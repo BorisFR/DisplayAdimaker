@@ -1,0 +1,20 @@
+{
+    "name": "TheSettings",
+    "keywords": "Settings",
+    "description": "",
+    "version": "1.0.0",
+    "authors": {
+        "name": "Stéphane Fardoux"
+    },
+    "export": {
+        "include": [
+            "src",
+            "TheSettings.h"
+        ]
+    },
+    "frameworks": "*",
+    "platforms": "*",
+    "build": {
+        "libArchive": true
+    }
+}
