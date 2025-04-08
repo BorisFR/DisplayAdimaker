@@ -133,9 +133,9 @@ void dbGetInfos()
     else
     {
       Serial.println("/!\\ Too much database try");
-      String ip = theSettings.getString("", "10.224.0.85");
-      String user = theSettings.getString("", "adimaker");
-      String password = theSettings.getString("", "mdpADI59");
+      String ip = theSettings.getString("", DEFAULT_MQTT_SERVER);
+      String user = theSettings.getString("", DEFAULT_MQTT_USER);
+      String password = theSettings.getString("", DEFAULT_MQTT_PASSWORD);
       // TODO: get infos from preferences
       theMQTT.doInit(uid, ip, user, password);
     }
