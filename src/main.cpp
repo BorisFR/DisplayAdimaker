@@ -147,10 +147,54 @@ void dbGetInfos()
 
 #include "TheScreen.hpp"
 TheScreen theScreen;
+// 1 caractère taille 2 => w 12 x h 14
+#define CHAR_SIZE2_WIDTH 12
+#define CHAR_SIZE2_HEIGHT 14
 
 uint16_t myWhite, myBlack, myBlue;
 String textDateTime = "";
-uint8_t decalColor = 0;
+uint8_t decalRainbowColor = 0;
+
+uint8_t previousSecond, previousMinute, previousHour;
+#define DATE_TIME_TEXT_SIZE 2
+#define DATE_TIME_CHAR_NUMBERS 6 + 2 + 1 + 8 + 2
+#define DATE_TIME_X (PANEL_SIZE_WIDTH - (DATE_TIME_CHAR_NUMBERS * CHAR_SIZE2_WIDTH)) / 2
+#define DATE_TIME_Y (PANEL_SIZE_HEIGHT - CHAR_SIZE2_HEIGHT) / 2
+uint8_t brightDateTime = 128;
+#define DATE_TIME_BORDER 6
+
+void displayDateTime()
+{
+  theScreen.externalRainbowRectangle(decalRainbowColor++, DATE_TIME_BORDER);
+  // change second?
+  if (previousSecond != theNTP.second())
+  {
+    previousSecond = theNTP.second();
+    String temp = theNTP.currentDateTime("s");
+    // theScreen.drawFillRectangle(DATE_TIME_X + 6 * CHAR_SIZE2_WIDTH, DATE_TIME_Y, 2 * CHAR_SIZE2_WIDTH, CHAR_SIZE2_HEIGHT, 0, 0, 0);
+    // theScreen.printText(temp.c_str(), DATE_TIME_TEXT_SIZE, DATE_TIME_X + 6 * CHAR_SIZE2_WIDTH, false, myWhite, brightDateTime);
+    theScreen.printText(temp.c_str(), DATE_TIME_TEXT_SIZE, DATE_TIME_X + 6 * CHAR_SIZE2_WIDTH, false, myWhite, myBlack, brightDateTime);
+    // change minute?
+    if (previousMinute != theNTP.minute())
+    {
+      previousMinute = theNTP.minute();
+      temp = theNTP.currentDateTime("i");
+      // theScreen.drawFillRectangle(DATE_TIME_X + 3 * CHAR_SIZE2_WIDTH, DATE_TIME_Y, 2 * CHAR_SIZE2_WIDTH, CHAR_SIZE2_HEIGHT, 0, 0, 0);
+      // theScreen.printText(temp.c_str(), DATE_TIME_TEXT_SIZE, DATE_TIME_X + 3 * CHAR_SIZE2_WIDTH, false, myWhite, brightDateTime);
+      theScreen.printText(temp.c_str(), DATE_TIME_TEXT_SIZE, DATE_TIME_X + 3 * CHAR_SIZE2_WIDTH, false, myWhite, myBlack, brightDateTime);
+      // change hour?
+      if (previousHour != theNTP.hour())
+      {
+        previousHour = theNTP.hour();
+        temp = theNTP.currentDateTime("H:i:s d/m/Y");
+        // theScreen.clear();
+        // theScreen.drawFillRectangle(DATE_TIME_X, DATE_TIME_Y, DATE_TIME_CHAR_NUMBERS * CHAR_SIZE2_WIDTH, CHAR_SIZE2_HEIGHT, 0, 0, 0);
+        // theScreen.printText(temp.c_str(), DATE_TIME_TEXT_SIZE, DATE_TIME_X, false, myWhite, brightDateTime);
+        theScreen.printText(temp.c_str(), DATE_TIME_TEXT_SIZE, DATE_TIME_X, false, myWhite, myBlack, brightDateTime);
+      }
+    }
+  }
+}
 
 void setup()
 {
@@ -193,8 +237,6 @@ void setup()
 #endif
 }
 
-uint8_t previousSecond, previousMinute, previousHour;
-
 void loop()
 {
 #ifdef USE_WIFI
@@ -223,30 +265,7 @@ void loop()
   }
   dataChanged = false;
 #endif
-  theScreen.externalRainbowRectangle(decalColor++);
-  if (previousSecond != theNTP.second())
-  {
-    previousSecond = theNTP.second();
-    String temp = theNTP.currentDateTime("s");
-    theScreen.drawFillRectangle(14 + 6 * 12, 9, 2 * 12, 14, myBlack);
-    theScreen.printText(temp.c_str(), 2, 14 + 6 * 12, false, myWhite, 255);
-    if (previousMinute != theNTP.minute())
-    {
-      previousMinute = theNTP.minute();
-      temp = theNTP.currentDateTime("i");
-      theScreen.drawFillRectangle(14 + 3 * 12, 9, 2 * 12, 14, myBlack);
-      theScreen.printText(temp.c_str(), 2, 14 + 3 * 12, false, myWhite, 255);
+  displayDateTime();
 
-      if (previousHour != theNTP.hour())
-      {
-        previousHour = theNTP.hour();
-        temp = theNTP.currentDateTime("H:i:s d/m/Y");
-        // theScreen.clear();
-        // 1 caractère taille 2 => w 12 x h 14
-        theScreen.drawFillRectangle(14, 9, 19 * 12, 14, myBlack);
-        theScreen.printText(temp.c_str(), 2, 14, false, myWhite, 255);
-      }
-    }
-  }
   theScreen.loop();
 }

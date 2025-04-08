@@ -9,3 +9,6 @@ Flash: [========= ]  89.1% (used 1167501 bytes from 1310720 bytes)
 test GFX_lite
 RAM:   [==        ]  17.1% (used 56012 bytes from 327680 bytes)
 Flash: [========= ]  89.1% (used 1167297 bytes from 1310720 bytes)
+
+RAM:   [=         ]  14.3% (used 46988 bytes from 327680 bytes)
+Flash: [=======   ]  69.3% (used 908717 bytes from 1310720 bytes)

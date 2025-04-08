@@ -8,10 +8,10 @@ void TheScreen::setup()
     // HUB75_I2S_CFG::i2s_pins _pins = {RL1, GL1, BL1, RL2, GL2, BL2, CH_A, CH_B, CH_C, CH_D, CH_E, LAT, OE, CLK};
     HUB75_I2S_CFG::i2s_pins _pins = {R1_PIN, G1_PIN, B1_PIN, R2_PIN, G2_PIN, B2_PIN, A_PIN, B_PIN, C_PIN, D_PIN, E_PIN, LAT_PIN, OE_PIN, CLK_PIN};
     HUB75_I2S_CFG mxconfig(
-        PANEL_WIDTH,  // width
-        PANEL_HEIGHT, // height
-        CHAIN_LENGTH, // chain length
-        _pins         // pin mapping
+        MATRIX_WIDTH,  // width
+        MATRIX_HEIGHT, // height
+        CHAIN_LENGTH,  // chain length
+        _pins          // pin mapping
     );
 
     mxconfig.i2sspeed = HUB75_I2S_CFG::HZ_10M; // I2S clock speed, better leave as-is unless you want to experiment.
@@ -113,10 +113,8 @@ uint16_t TheScreen::colorWheel(uint8_t wheelPos)
     return colorRGB(WheelPos * 3, 255 - WheelPos * 3, 0);*/
 }
 
-void TheScreen::externalRainbowRectangle(uint16_t decal)
+void TheScreen::externalRainbowRectangle(uint16_t decal, uint8_t border)
 {
-    byte border = 6;
-    uint16_t startWheel = 0;
     for (uint16_t y = 0; y < PANEL_SIZE_HEIGHT; y++)
     {
         byte startWheel = decal + y + 1;
@@ -137,6 +135,11 @@ void TheScreen::drawFillRectangle(uint16_t x, uint16_t y, uint16_t width, uint16
     dma_display->fillRect(x, y, width, height, color);
 }
 
+void TheScreen::drawFillRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t red, uint8_t green, uint8_t blue)
+{
+    dma_display->fillRect(x, y, width, height, red, green, blue);
+}
+
 /// renvoie la largeur en led d'un texte
 uint16_t TheScreen::getTextWidth(const char *text)
 {
@@ -152,10 +155,22 @@ void TheScreen::printText(const char *text, uint8_t size, int posX, bool centere
     dma_display->setTextSize(size);
     dma_display->setBrightness8(lumin);
     if (centered)
-        posX = ((PANEL_WIDTH * CHAIN_LENGTH) - getTextWidth(text)) / 2;
+        posX = ((PANEL_SIZE_WIDTH)-getTextWidth(text)) / 2;
     int posY = (-7 * size + 32) / 2;
     dma_display->setCursor(posX, posY);
     dma_display->setTextColor(color);
+    dma_display->print(text);
+}
+
+void TheScreen::printText(const char *text, uint8_t size, int posX, bool centered, uint16_t textColor, uint16_t backgroundColor, uint8_t lumin)
+{
+    dma_display->setTextSize(size);
+    dma_display->setBrightness8(lumin);
+    if (centered)
+        posX = ((PANEL_SIZE_WIDTH)-getTextWidth(text)) / 2;
+    int posY = (-7 * size + 32) / 2;
+    dma_display->setCursor(posX, posY);
+    dma_display->setTextColor(textColor, backgroundColor);
     dma_display->print(text);
 }
 

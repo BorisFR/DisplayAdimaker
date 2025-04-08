@@ -1,13 +1,14 @@
 #ifndef THE_SCREEN_hpp
 #define THE_SCREEN_hpp
 
+#define PIXEL_COLOR_DEPTH_BITS 8
+#define MATRIX_WIDTH 64
+#define MATRIX_HEIGHT 32 // Panel height of 64 will required PIN_E to be defined.
+#define CHAIN_LENGTH 4   // Number of chained panels, if just a single panel, obviously set to 1
 #include <ESP32-HUB75-MatrixPanel-I2S-DMA.h>
 
-#define PANEL_WIDTH 64
-#define PANEL_HEIGHT 32 // Panel height of 64 will required PIN_E to be defined.
-#define CHAIN_LENGTH 4  // Number of chained panels, if just a single panel, obviously set to 1
-#define PANEL_SIZE_WIDTH PANEL_WIDTH *CHAIN_LENGTH
-#define PANEL_SIZE_HEIGHT PANEL_HEIGHT
+#define PANEL_SIZE_WIDTH MATRIX_WIDTH *CHAIN_LENGTH
+#define PANEL_SIZE_HEIGHT MATRIX_HEIGHT
 
 ///////////////////////////////////////////////// Définition des pins pour connecter la matrice
 #define R1_PIN 19
@@ -41,9 +42,11 @@ public:
     void clear();
     void clear(uint16_t fillColor);
     void printText(const char *text, uint8_t size, int posX, bool centered, uint16_t color, uint8_t lumin);
+    void printText(const char *text, uint8_t size, int posX, bool centered, uint16_t textColor, uint16_t backgroundColor, uint8_t lumin);
     void fadingText(const char *text, uint8_t size, bool isRGB, uint16_t color, uint16_t fillColor, uint8_t lumin, int delais, int fadeInTime, int fadeOutTime);
-    void externalRainbowRectangle(uint16_t decal = 0);
+    void externalRainbowRectangle(uint16_t decal = 0, uint8_t border = 4);
     void drawFillRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color);
+    void drawFillRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t red, uint8_t green, uint8_t blue);
 
 private:
     MatrixPanel_I2S_DMA *dma_display;
