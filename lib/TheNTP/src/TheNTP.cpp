@@ -2,12 +2,17 @@
 
 TheNTP::TheNTP() {}
 
+bool TheNTP::isOk()
+{
+    return ntpOk;
+}
+
 void TheNTP::setup()
 {
     ntpOk = false;
     if (WiFi.status() != WL_CONNECTED)
     {
-        Serial.print("/!\\ NTP: Mise à l'heure de l'esp32 impossible, aucune connexion réseau");
+        // Serial.print("/!\\ NTP: Mise à l'heure de l'esp32 impossible, aucune connexion réseau");
         return;
     }
     Serial.print("NTP: Mise à l'heure de l'esp32 en cours");

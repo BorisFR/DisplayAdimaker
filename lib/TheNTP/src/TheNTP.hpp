@@ -12,6 +12,7 @@ public:
     TheNTP();
     void setup();
     void loop();
+    bool isOk();
     String currentDateTime(String format);
     uint8_t second();
     uint8_t minute();

@@ -10,5 +10,7 @@ test GFX_lite
 RAM:   [==        ]  17.1% (used 56012 bytes from 327680 bytes)
 Flash: [========= ]  89.1% (used 1167297 bytes from 1310720 bytes)
 
-RAM:   [=         ]  14.3% (used 46988 bytes from 327680 bytes)
-Flash: [=======   ]  69.3% (used 908717 bytes from 1310720 bytes)
+RAM:   [===       ]  29.9% (used 97888 bytes from 327680 bytes)
+Flash: [=======   ]  71.7% (used 939497 bytes from 1310720 bytes)
+
+https://digole.com/tools/PicturetoC_Hex_converter.php

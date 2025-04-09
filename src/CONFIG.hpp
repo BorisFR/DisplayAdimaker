@@ -21,7 +21,7 @@
 #define COPY_LINE1 " \xA9 2025 by JUNIA"
 #define COPY_LINE2 "** St. Fardoux **"
 // WiFi
-#define PORTAL_NAME "I.o.T."
+#define PORTAL_NAME "TheDISPLAY"
 // For Other The Air update firmware
 // Network Time Protocol
 #define NTP_SERVER_EU "europe.pool.ntp.org"

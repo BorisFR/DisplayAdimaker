@@ -49,6 +49,11 @@ uint16_t TheScreen::colorRGB(uint16_t r, uint16_t g, uint16_t b)
     return dma_display->color565(r, g, b);
 }
 
+void TheScreen::drawPixel(uint16_t x, uint16_t y, uint16_t color)
+{
+    dma_display->drawPixel(x, y, color);
+}
+
 /*
 uint16_t TheScreen::colorWheel(uint16_t WheelPos)
 {

@@ -41,6 +41,7 @@ public:
     uint16_t rgb888ToRgb565(uint8_t r, uint8_t g, uint8_t b);
     void clear();
     void clear(uint16_t fillColor);
+    void drawPixel(uint16_t x, uint16_t y, uint16_t color);
     void printText(const char *text, uint8_t size, int posX, bool centered, uint16_t color, uint8_t lumin);
     void printText(const char *text, uint8_t size, int posX, bool centered, uint16_t textColor, uint16_t backgroundColor, uint8_t lumin);
     void fadingText(const char *text, uint8_t size, bool isRGB, uint16_t color, uint16_t fillColor, uint8_t lumin, int delais, int fadeInTime, int fadeOutTime);
