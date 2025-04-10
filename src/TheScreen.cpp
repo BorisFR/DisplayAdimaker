@@ -20,11 +20,11 @@ void TheScreen::setup()
     // mxconfig.double_buff = true;
     dma_display = new MatrixPanel_I2S_DMA(mxconfig);
     dma_display->begin();
-    dma_display->setBrightness8(128); // 0-255
+    dma_display->setBrightness8(DEFAULT_BRIGHT); // 0-255
     dma_display->setTextWrap(false);
     dma_display->clearScreen();
 
-    fadingText("DisplayLED", 2, false, colorRGB(240, 107, 66), colorRGB(63, 42, 86), 255, 3500, 2500, 250);
+    fadingText("DisplayLED", 2, false, colorRGB(240, 107, 66), colorRGB(63, 42, 86), DEFAULT_BRIGHT, 3500, 2500, 250);
 }
 
 void TheScreen::loop()
@@ -72,9 +72,52 @@ uint16_t TheScreen::colorWheel(uint16_t WheelPos)
 }
 */
 
-uint16_t TheScreen::rgb888ToRgb565(uint8_t r, uint8_t g, uint8_t b)
+uint16_t TheScreen::rgb888ToRgb565(uint8_t red, uint8_t green, uint8_t blue)
 {
-    return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
+    // return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
+    red >>= 3;
+    green >>= 2;
+    blue >>= 3;
+    return (red << 11) | (green << 5) | blue;
+    // return (((31 * (red + 4)) / 255) << 11) |
+    //        (((63 * (green + 2)) / 255) << 5) |
+    //        ((31 * (blue + 4)) / 255);
+}
+
+uint8_t TheScreen::nextWheelIndex(uint8_t value)
+{
+    value++;
+    if (value < 94)
+        return value;
+    return value % 95;
+}
+
+uint16_t TheScreen::myColorWheel(uint8_t wheelPos)
+{
+    uint8_t pos = wheelPos;
+    uint8_t red, green, blue;
+    if (pos < 32) // red to blue
+    {
+        red = 31 - pos;
+        green = 0;
+        blue = pos;
+    }
+    else
+    {
+        if (pos < 64) // blue to green
+        {
+            red = 0;
+            green = 2 * pos - 63; // => 64-(64-pos)*2
+            blue = 63 - pos;
+        }
+        else // green to red
+        {
+            red = pos - 63;
+            green = 1 + 2 * (94 - pos);
+            blue = 0;
+        }
+    }
+    return rgb888ToRgb565(red, green, blue);
 }
 
 uint16_t TheScreen::colorWheel(uint8_t wheelPos)
@@ -128,9 +171,11 @@ void TheScreen::externalRainbowRectangle(uint16_t decal, uint8_t border)
             if (y < border || y >= PANEL_SIZE_HEIGHT - border ||
                 x < border || x >= PANEL_SIZE_WIDTH - border)
             {
-                dma_display->drawPixel(x, y, colorWheel(startWheel++));
+                dma_display->drawPixel(x, y, colorWheel(startWheel));
+                // dma_display->drawPixel(x, y, myColorWheel(startWheel));
+                // startWheel = nextWheelIndex(startWheel);
             }
-            // startWheel++;
+            // startWheel = nextWheelIndex(startWheel);
         }
     }
 }

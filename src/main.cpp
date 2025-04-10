@@ -154,7 +154,7 @@ PNG png;
 #define CHAR_SIZE2_WIDTH 12
 #define CHAR_SIZE2_HEIGHT 14
 
-uint8_t bright = 128;
+uint8_t bright = DEFAULT_BRIGHT;
 uint16_t myWhite, myBlack, myBlue;
 String textDateTime = "";
 uint8_t decalRainbowColor = 0;
@@ -172,7 +172,8 @@ void PNGDraw(PNGDRAW *pDraw)
   uint16_t usPixels[320];
   uint8_t ucMask[40];
   PRIVATE *pPriv = (PRIVATE *)pDraw->pUser;
-  png.getLineAsRGB565(pDraw, usPixels, PNG_RGB565_BIG_ENDIAN, 0xffffffff);
+  //.getLineAsRGB565(pDraw, usPixels, PNG_RGB565_BIG_ENDIAN, 0xffffffff);
+  png.getLineAsRGB565(pDraw, usPixels, PNG_RGB565_LITTLE_ENDIAN, 0x0);
   for (uint16_t x = 0; x < pDraw->iWidth; x++)
   {
     theScreen.drawPixel(pngX + x, pngY + pDraw->y, usPixels[x]);
@@ -270,6 +271,7 @@ void wifiCallback(WiFiEvent_t code)
       textToDisplay = String(PORTAL_NAME);
       displayState();
       displayLogo();
+      displayLogo(PANEL_SIZE_WIDTH - logo_junia_66_32_WIDTH);
     }
     break;
   case SYSTEM_EVENT_AP_START: // 15
@@ -294,9 +296,18 @@ uint8_t previousSecond, previousMinute, previousHour = 99;
 
 #define DATE_TIME_BORDER 3
 
+#define RAINBOW_SPEED 50
+unsigned long rainbowSpeed = 0;
+
 void displayDateTime()
 {
-  theScreen.externalRainbowRectangle(decalRainbowColor++, DATE_TIME_BORDER);
+  theScreen.externalRainbowRectangle(decalRainbowColor, DATE_TIME_BORDER);
+  // decalRainbowColor = theScreen.nextWheelIndex(decalRainbowColor);
+  if (millis() - rainbowSpeed > RAINBOW_SPEED)
+  {
+    decalRainbowColor++;
+    rainbowSpeed = millis();
+  }
 #ifdef USE_NTP
   // if (!theNTP.isOk())
   //   return;

@@ -1,0 +1,21 @@
+
+Led OFF la nuit => horaires ?
+
+Préparer des animations types
+Bibliothèque de logo / icon
+
+Site web pour planifier la communication
+Créer des comptes utilisateur
+Tracabilité : mémoriser qui créé et modifie => en cas d'affichage non désiré
+
+Une communication :
+Texte, position & animation
+Logo / Icon / Gfx, position & animation
+date/heure de début & fin (possibilité permanent de 1/1/2000 à 31/12/2099)
+Eventuel planning sur la journée (exemple de 8h à 10h, afficher bonjour)
+Durée d'affichage (20 secondes)
+Fréquence d'affichage (1 fois par 5 minutes)
+
+
+Météo du jour
+St du jour

@@ -7,10 +7,25 @@ RAM:   [==        ]  17.1% (used 56012 bytes from 327680 bytes)
 Flash: [========= ]  89.1% (used 1167501 bytes from 1310720 bytes)
 
 test GFX_lite
-RAM:   [==        ]  17.1% (used 56012 bytes from 327680 bytes)
-Flash: [========= ]  89.1% (used 1167297 bytes from 1310720 bytes)
+RAM:   [===       ]  29.9% (used 97888 bytes from 327680 bytes)  
+Flash: [=======   ]  71.7% (used 939249 bytes from 1310720 bytes)
 
-RAM:   [===       ]  29.9% (used 97888 bytes from 327680 bytes)
-Flash: [=======   ]  71.7% (used 939497 bytes from 1310720 bytes)
+https://github.com/adafruit/RGB-matrix-Panel/blob/master/examples/colorwheel_32x32/colorwheel_32x32.ino
 
 https://digole.com/tools/PicturetoC_Hex_converter.php
+
+https://adrianotiger.github.io/binary2array/
+
+
+https://forums.adafruit.com/viewtopic.php?t=123034
+green to blue
+// Input a value 0 to 255 to get a color value.
+// The colours are a transition r - g - b - back to r.
+uint32_t Wheel(byte WheelPos) {
+  if (WheelPos > 126) {
+ return strip.Color (0, min (255, 2 * abs (127 - WheelPos)), min (255, 256 - (2 * abs (WheelPos-127))));
+  }
+ else {
+  return strip.Color (0, min (255, 2 * abs (127 - WheelPos)), min (255, 255 - (2 * abs (127-WheelPos))));
+ }
+}

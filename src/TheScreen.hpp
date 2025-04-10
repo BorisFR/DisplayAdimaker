@@ -28,6 +28,8 @@
 #define OE_PIN 15
 #define CLK_PIN 2
 
+#define DEFAULT_BRIGHT 40
+
 class TheScreen
 {
 public:
@@ -37,7 +39,9 @@ public:
 
     uint16_t colorRGB(uint16_t r, uint16_t g, uint16_t b);
     // uint16_t colorWheel(uint16_t WheelPos);
+    uint8_t nextWheelIndex(uint8_t value);
     uint16_t colorWheel(uint8_t WheelPos);
+    uint16_t myColorWheel(uint8_t WheelPos);
     uint16_t rgb888ToRgb565(uint8_t r, uint8_t g, uint8_t b);
     void clear();
     void clear(uint16_t fillColor);
